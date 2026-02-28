@@ -11,25 +11,31 @@
 - Validate core workflows with unit tests.
 - Add role-based access primitives and tenant isolation checks.
 
-## Phase 2: API, billing, and security core (in progress)
-- Add framework-agnostic API façade (`EkklesiaAPI`) for application orchestration.
+## Phase 2: SaaS backend application core (in progress)
+- Add framework-agnostic API façade (`EkklesiaAPI`) for orchestration.
 - Add subscription plan/status model with write gating.
 - Add audit logging hooks for sensitive writes.
 - Validate billing + audit + access interactions with unit tests.
 
-## Phase 3: Transport + persistence
-- Mount API façade through FastAPI contracts and auth middleware.
+## Phase 3: Frontend product UX foundation (in progress)
+- Build React + Vite + Tailwind scaffold for modern SaaS UI.
+- Implement responsive layout (navbar + sidebar).
+- Ship first-cut module screens: Dashboard, Members, Families, Finance, Certificates, Reports, Settings.
+- Add mock data service layer for API integration readiness.
+
+## Phase 4: Transport + persistence
+- Mount API façade through FastAPI/Django REST contracts and auth middleware.
 - Migrate from in-memory to PostgreSQL repositories.
 - Add schema migrations and repository interfaces.
 - Add integration tests for API and data boundaries.
 
-## Phase 4: SaaS operations
+## Phase 5: SaaS operations
 - Feature gating by subscription tier in product modules.
 - Billing provider webhooks (trial, active, delinquent, canceled).
 - Operational dashboards for tenant health and audit observability.
 
 ## Immediate backlog (next 1-2 sprints)
-1. Implement FastAPI routes and token-based actor resolution.
-2. Introduce attendance, giving, and groups modules.
-3. Add persisted repository implementations for service interfaces.
-4. Add CI pipeline (test, lint, type checks).
+1. Connect React pages to real backend API endpoints.
+2. Implement auth UX and route guards.
+3. Add attendance, giving, and group management modules.
+4. Add CI pipeline (test, lint, type checks, build).

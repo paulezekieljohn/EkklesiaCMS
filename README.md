@@ -2,30 +2,38 @@
 
 Ekklesia CMS is a multi-tenant SaaS platform for church operations and engagement.
 
-## Current focus
-This repository currently includes a backend foundation for:
-- Tenant onboarding
-- Member records
-- Event scheduling
-- Role-based access policy primitives
-- Subscription plan/status gating
-- Audit log capture for sensitive writes
-- Framework-agnostic API façade for transport integration
+## Current foundation
+- Backend domain/service core (tenant, member, event, RBAC, billing gates, audit logs)
+- Framework-agnostic backend API façade
+- React + Vite + Tailwind frontend SaaS dashboard scaffold
 
-The goal is to establish a robust service core before adding a production web transport and persistence layer.
+## Frontend (React)
+The new UI is located in `frontend/` and includes:
+- Modern SaaS layout (top navbar + collapsible sidebar)
+- Dashboard with KPI cards, charts, and alerts
+- Members, Families, Finance, Certificates, Reports, Settings pages
+- Design system aligned with the requested church-friendly palette
 
-## Quick start
+### Run frontend locally
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Build frontend
+```bash
+cd frontend
+npm run build
+```
+
+## Backend tests
 ```bash
 python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-## Project structure
-- `docs/`: roadmap, architecture notes, and execution phases
-- `src/ekklesia_cms/`: domain models, access policy, billing, API façade, and in-memory services
-- `tests/`: unit tests validating business rules, authorization, and subscription behavior
-
 ## Next milestones
-1. Mount `EkklesiaAPI` behind FastAPI endpoints + JWT middleware
-2. Add PostgreSQL repositories and migrations
-3. Add tenant-scoped audit search endpoints
-4. Add billing provider integration and webhook handling
+1. Connect frontend `services/api.js` to real backend endpoints
+2. Add authentication flow (login/session/token handling)
+3. Mount backend façade behind FastAPI/Django REST transport
+4. Add PostgreSQL repositories and migrations
