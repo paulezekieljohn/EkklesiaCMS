@@ -1,0 +1,2 @@
+# EkklesiaCMS
+Church Management System
