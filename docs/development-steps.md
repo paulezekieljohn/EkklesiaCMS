@@ -7,27 +7,29 @@
 
 ## Phase 1: Domain baseline (complete)
 - Implement core domain models and invariants.
-- Implement an in-memory service as a reference behavior layer.
+- Implement in-memory service as a reference behavior layer.
 - Validate core workflows with unit tests.
 - Add role-based access primitives and tenant isolation checks.
 
-## Phase 2: API and security (next)
-- Introduce FastAPI contracts for tenant provisioning and CRUD operations.
-- Add authN/authZ adapters around role model (JWT/session).
-- Add audit logging for sensitive changes.
+## Phase 2: API, billing, and security core (in progress)
+- Add framework-agnostic API façade (`EkklesiaAPI`) for application orchestration.
+- Add subscription plan/status model with write gating.
+- Add audit logging hooks for sensitive writes.
+- Validate billing + audit + access interactions with unit tests.
 
-## Phase 3: Data + reliability
+## Phase 3: Transport + persistence
+- Mount API façade through FastAPI contracts and auth middleware.
 - Migrate from in-memory to PostgreSQL repositories.
-- Add migration strategy.
-- Add test matrix (unit, integration, API contract).
+- Add schema migrations and repository interfaces.
+- Add integration tests for API and data boundaries.
 
-## Phase 4: SaaS capabilities
-- Plan feature gating based on subscription tier.
-- Billing lifecycle hooks (trial, active, delinquent, canceled).
-- Operational dashboards for tenant health.
+## Phase 4: SaaS operations
+- Feature gating by subscription tier in product modules.
+- Billing provider webhooks (trial, active, delinquent, canceled).
+- Operational dashboards for tenant health and audit observability.
 
 ## Immediate backlog (next 1-2 sprints)
-1. Ship FastAPI endpoints that call service + access policy.
-2. Add attendance tracking domain.
-3. Add persisted repositories with clean interfaces.
-4. Add CI pipeline for tests and linting.
+1. Implement FastAPI routes and token-based actor resolution.
+2. Introduce attendance, giving, and groups modules.
+3. Add persisted repository implementations for service interfaces.
+4. Add CI pipeline (test, lint, type checks).
