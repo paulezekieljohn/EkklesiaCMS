@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import defaultdict
 from datetime import date
 
+from .access import AccessPolicy, Action, Actor
 from .domain import Event, Member, Tenant
 
 
@@ -11,6 +12,7 @@ class InMemoryChurchService:
         self._tenants: dict[str, Tenant] = {}
         self._members_by_tenant: dict[str, dict[str, Member]] = defaultdict(dict)
         self._events_by_tenant: dict[str, dict[str, Event]] = defaultdict(dict)
+        self._policy = AccessPolicy()
 
     def create_tenant(self, tenant_id: str, name: str) -> Tenant:
         if tenant_id in self._tenants:
@@ -41,6 +43,18 @@ class InMemoryChurchService:
         self._members_by_tenant[tenant_id][member.member_id] = member
         return member
 
+    def add_member_as(
+        self,
+        actor: Actor,
+        tenant_id: str,
+        member_id: str,
+        first_name: str,
+        last_name: str,
+        email: str,
+    ) -> Member:
+        self._policy.assert_allowed(actor, Action.MANAGE_MEMBERS, tenant_id)
+        return self.add_member(tenant_id, member_id, first_name, last_name, email)
+
     def schedule_event(
         self,
         tenant_id: str,
@@ -61,13 +75,32 @@ class InMemoryChurchService:
         self._events_by_tenant[tenant_id][event.event_id] = event
         return event
 
+    def schedule_event_as(
+        self,
+        actor: Actor,
+        tenant_id: str,
+        event_id: str,
+        title: str,
+        scheduled_for: date,
+    ) -> Event:
+        self._policy.assert_allowed(actor, Action.MANAGE_EVENTS, tenant_id)
+        return self.schedule_event(tenant_id, event_id, title, scheduled_for)
+
     def list_members(self, tenant_id: str) -> list[Member]:
         self._assert_tenant_exists(tenant_id)
         return list(self._members_by_tenant[tenant_id].values())
 
+    def list_members_as(self, actor: Actor, tenant_id: str) -> list[Member]:
+        self._policy.assert_allowed(actor, Action.VIEW_MEMBERS, tenant_id)
+        return self.list_members(tenant_id)
+
     def list_events(self, tenant_id: str) -> list[Event]:
         self._assert_tenant_exists(tenant_id)
         return list(self._events_by_tenant[tenant_id].values())
+
+    def list_events_as(self, actor: Actor, tenant_id: str) -> list[Event]:
+        self._policy.assert_allowed(actor, Action.VIEW_EVENTS, tenant_id)
+        return self.list_events(tenant_id)
 
     def _assert_tenant_exists(self, tenant_id: str) -> None:
         if tenant_id not in self._tenants:
